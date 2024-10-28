@@ -1,0 +1,9 @@
+beautifulsoup4==4.12.3
+numpy==2.1.2
+opencv_python==4.10.0.84
+pandas==2.2.3
+Pillow==11.0.0
+pygame==2.6.1
+pyzbar==0.1.9
+Requests==2.32.3
+streamlit==1.39.0
