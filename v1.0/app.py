@@ -18,8 +18,12 @@ st.set_page_config(
 )
 
 # Inicializar el sistema de sonido
-mixer.init()
-
+# Inicializar el sistema de sonido
+try:
+    mixer.init()
+except Exception as e:
+    st.warning("El Sistema de sonido no esta disponible")
+    
 # Función para decodificar QR usando OpenCV
 def decode_qr_with_opencv(image_np):
     qr_code_detector = cv2.QRCodeDetector()
