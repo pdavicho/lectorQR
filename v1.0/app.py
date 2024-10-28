@@ -9,6 +9,10 @@ import pandas as pd
 import os
 from pygame import mixer
 import io
+import pytz
+
+# Configurar la zona horaria
+timezone_ecuador = pytz.timezone("America/Guayaquil")
 
 # Configuración inicial de la página
 st.set_page_config(
@@ -18,12 +22,11 @@ st.set_page_config(
 )
 
 # Inicializar el sistema de sonido
-# Inicializar el sistema de sonido
 try:
     mixer.init()
 except Exception as e:
     st.warning("El Sistema de sonido no esta disponible")
-    
+
 # Función para decodificar QR usando OpenCV
 def decode_qr_with_opencv(image_np):
     qr_code_detector = cv2.QRCodeDetector()
@@ -127,7 +130,7 @@ def process_url(url):
             'identificacion': None,
             'correo': None,
             'rol': None,
-            'fecha_registro': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            'fecha_registro': datetime.datetime.now(timezone_ecuador).strftime("%Y-%m-%d %H:%M:%S")
         }
         
         # Nombre
@@ -144,7 +147,7 @@ def process_url(url):
         h6_elements = soup.find_all('h6', style="text-align: center; line-height: 15px")
         for element in h6_elements:
             if "No. Identificación" in element.text:
-                data['identificacion'] = element.text.replace("No. Identificación:", "").strip()
+                data['identificacion'] = str(element.text.replace("No. Identificación:", "").strip())
             elif "Correo Institucional" in element.text:
                 data['correo'] = element.get_text(separator=" ").replace("Correo Institucional:", "").strip()
         
@@ -177,7 +180,7 @@ def main():
         # Botón de activación de cámara más atractivo
         st.markdown("### 📸 Control de Cámara")
         camera_placeholder = st.empty()
-        enable = st.checkbox('Activar Cámara', help='Activa/Desactiva la cámara web')
+        enable = st.toggle('Activar Cámara', help='Activa/Desactiva la cámara web')
         
         if enable:
             picture = st.camera_input('Capturar QR', key='camera')
