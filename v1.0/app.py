@@ -208,7 +208,7 @@ def main():
         # Botón de activación de cámara más atractivo
         st.markdown("### 📸 Control de Cámara")
         camera_placeholder = st.empty()
-        enable = st.toggle('Activar Cámara', help='Activa/Desactiva la cámara web')
+        enable = st.checkbox('Activar Cámara', help='Activa/Desactiva la cámara web')
         
         if enable:
             picture = st.camera_input('Capturar QR', key='camera')
