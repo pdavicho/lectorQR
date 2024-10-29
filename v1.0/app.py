@@ -37,7 +37,7 @@ def login_screen():
             st.session_state["authenticated"] = True
             st.session_state["button_clicked"] = True
             st.success("Acceso permitido. Bienvenido!", icon="✅")
-            st.rerun()
+            #st.rerun()
         else:
             st.error("Credenciales incorrectas. Inténtalo de nuevo.")
 
