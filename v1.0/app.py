@@ -14,6 +14,34 @@ import pytz
 # Configurar la zona horaria
 timezone_ecuador = pytz.timezone("America/Guayaquil")
 
+# Lista de usuarios permitidos
+AUTH_USERS = {
+    "admin": "1234",
+    "pablo.minango": "Pi2024loto"
+}
+
+# Función para verificar credenciales
+def authenticate(username, password):
+    return AUTH_USERS.get(username) == password
+
+# Pantalla de inicio de sesión
+def login_screen():
+    st.title("🔒 Acceso al Sistema de Registro QR")
+    st.markdown("Por favor, ingresa tus credenciales para acceder.")
+
+    username = st.text_input("Usuario")
+    password = st.text_input("Contraseña", type="password")
+
+    if st.button("Iniciar sesión"):
+        if authenticate(username, password):
+            st.session_state["authenticated"] = True
+            st.session_state["button_clicked"] = True
+            st.success("Acceso permitido. Bienvenido!", icon="✅")
+            st.rerun()
+        else:
+            st.error("Credenciales incorrectas. Inténtalo de nuevo.")
+
+
 # Configuración inicial de la página
 st.set_page_config(
     page_title="Sistema de Registro QR",
@@ -180,7 +208,7 @@ def main():
         # Botón de activación de cámara más atractivo
         st.markdown("### 📸 Control de Cámara")
         camera_placeholder = st.empty()
-        enable = st.checkbox('Activar Cámara', help='Activa/Desactiva la cámara web')
+        enable = st.toggle('Activar Cámara', help='Activa/Desactiva la cámara web')
         
         if enable:
             picture = st.camera_input('Capturar QR', key='camera')
@@ -239,5 +267,23 @@ def main():
         except Exception as e:
             st.error(f"Error al cargar los registros: {str(e)}")
 
+    # Botón para cerrar sesión
+    if st.button("Salir"):
+        st.session_state["button_clicked"] = True
+
+        if st.session_state["button_clicked"]:
+            st.session_state["authenticated"] = False
+            st.rerun()  # Recargar la aplicación para volver al inicio de sesión
+
+
 if __name__ == "__main__":
-    main()
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
+
+    if "button_clicked" not in st.session_state:
+        st.session_state["button_clicked"] = False
+
+    if not st.session_state["authenticated"]:
+        login_screen()
+    else:
+        main()
