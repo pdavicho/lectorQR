@@ -53,7 +53,7 @@ st.set_page_config(
 try:
     mixer.init()
 except Exception as e:
-    st.warning("El Sistema de sonido no esta disponible")
+    print("El Sistema de sonido no esta disponible")
 
 # Función para decodificar QR usando OpenCV
 def decode_qr_with_opencv(image_np):
