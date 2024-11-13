@@ -37,7 +37,7 @@ def login_screen():
             st.session_state["authenticated"] = True
             st.session_state["button_clicked"] = True
             st.success("Acceso permitido. Bienvenido!", icon="✅")
-            st.experimental_rerun() 
+            st.rerun() 
         else:
             st.error("Credenciales incorrectas. Inténtalo de nuevo.")
 
@@ -273,7 +273,7 @@ def main():
 
         if st.session_state["button_clicked"]:
             st.session_state["authenticated"] = False
-            st.experimental_rerun()  # Recargar la aplicación para volver al inicio de sesión
+            st.rerun()  # Recargar la aplicación para volver al inicio de sesión
 
 
 if __name__ == "__main__":
