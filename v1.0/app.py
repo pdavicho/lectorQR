@@ -94,30 +94,6 @@ def decode_qr_data(image):
         st.error(f"Error al decodificar QR: {str(e)}")
         return f"Error: {str(e)}"
 
-# Función para reproducir sonido de éxito
-def play_success_sound():
-    try:
-        duration = 0.1  # segundos
-        freq = 1000  # Hz
-        sample_rate = 44100
-        t = np.linspace(0, duration, int(sample_rate * duration))
-        signal = np.sin(2 * np.pi * freq * t)
-        sound = (signal * 32767).astype(np.int16)
-        
-        sound_file = io.BytesIO()
-        import wave
-        with wave.open(sound_file, 'wb') as wav:
-            wav.setnchannels(1)
-            wav.setsampwidth(2)
-            wav.setframerate(sample_rate)
-            wav.writeframes(sound.tobytes())
-        
-        sound_file.seek(0)
-        mixer.music.load(sound_file)
-        mixer.music.play()
-    except Exception as e:
-        st.warning(f"No se pudo reproducir el sonido: {str(e)}")
-
 # Función para guardar datos en Excel
 def save_to_excel(data, filename="registros.xlsx"):
     try:
@@ -221,9 +197,7 @@ def main():
                     qr_data = decode_qr_data(image)
                 
                 if qr_data and qr_data != "No se encontró ningún código QR.":
-                    # Reproducir sonido de éxito
-                    play_success_sound()
-                    
+                                        
                     # Procesar datos
                     with st.spinner('Obteniendo datos...'):
                         user_data = process_url(qr_data)
